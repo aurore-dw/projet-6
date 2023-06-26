@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tricks index{% endblock %}
+
+{% block body %}
+    {% include 'tricks/_tricks.html.twig' with {'tricks': tricks} %}
+
+    <div id="load-more-container" class="text-center" style="margin-top: 20px;">
+        <button id="load-more-btn" class="btn btn-primary">Charger plus</button>
+    </div>
+
+    {% if app.user is not null %}
+        <a href="{{ path('app_tricks_new') }}" class="btn btn-primary">Créer une nouvelle figure</a>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    // Variable pour suivre le nombre de tricks chargés
+    var loadedTricks = {{ tricks|length }};
+
+    // Fonction pour charger les tricks via AJAX
+    function loadMoreTricks() {
+        var loadMoreBtn = $('#load-more-btn');
+        loadMoreBtn.prop('disabled', true); // Désactive le bouton pendant le chargement
+
+        // Requête AJAX
+        $.ajax({
+            url: '{{ path('load_more_tricks') }}', // Nouvelle route pour charger les tricks supplémentaires
+            type: 'GET',
+            data: { loadedTricks: loadedTricks },
+            success: function(response) {
+                var tricksContainer = $('#tricks-container');
+                tricksContainer.append(response);
+
+                loadedTricks += 8; // Incrémente le nombre de tricks chargés
+
+                if (response.trim() === '') {
+                    // S'il n'y a plus de tricks à charger, masque le bouton
+                    $('#load-more-container').hide();
+                } else {
+                    loadMoreBtn.prop('disabled', false); // Réactive le bouton
+                }
+            },
+            error: function(xhr, status, error) {
+                // Gérer les erreurs de la requête AJAX
+            }
+        });
+    }
+
+    // Écouteur d'événement pour le bouton "Load More"
+    $('#load-more-btn').on('click', loadMoreTricks);
+</script>
+{% endblock %}
