@@ -25,9 +25,9 @@ class TricksController extends AbstractController
         ]);*/
         $tricks = $tricksRepository->findBy([], null, 8);
 
-    return $this->render('tricks/index.html.twig', [
-        'tricks' => $tricks,
-    ]);
+        return $this->render('tricks/index.html.twig', [
+            'tricks' => $tricks,
+        ]);
     }
 
     private $entityManager;
@@ -152,24 +152,19 @@ class TricksController extends AbstractController
                 $trick->addPicture($existingPicture);
             }
 
-            
             // Traitement des nouvelles images
-// Traitement des nouvelles images
-if (!empty($uploadedPictures)) {
-    foreach ($uploadedPictures as $uploadedPicture) {
-        if ($uploadedPicture->isValid() && $uploadedPicture->getError() === UPLOAD_ERR_OK) {
-            // Vérifier si le fichier est temporaire
-            if ($uploadedPicture->getPath() !== false && !strpos($uploadedPicture->getClientOriginalName(), 'tmp')) {
-                $filename = md5(uniqid()) . '.' . $uploadedPicture->guessExtension();
-                $uploadedPicture->move(
-                    $this->getParameter('picture_directory'),
-                    $filename
-                );
-                $trick->addPicture($filename);
+            if (!empty($uploadedPictures)) {
+                foreach ($uploadedPictures as $uploadedPicture) {
+                    if ($uploadedPicture->isValid() && $uploadedPicture->getError() === UPLOAD_ERR_OK ) {
+                    $filename = md5(uniqid()) . '.' . $uploadedPicture->guessExtension();
+                    $uploadedPicture->move(
+                        $this->getParameter('picture_directory'),
+                        $filename
+                    );
+                    $trick->addPicture($filename);
+                }
             }
         }
-    }
-}
 
             // Enregistrer les modifications dans la base de données
             $tricksRepository->save($trick, true);
