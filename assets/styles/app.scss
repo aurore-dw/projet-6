@@ -2,6 +2,7 @@
 
 #mainNav{
     background-color: black!important;
+    position:sticky!important;
 }
 #mainNav a{
     color:white!important;
@@ -16,3 +17,12 @@
     background-position: 50% 50%;
 }
 
+.chevron-down{
+    position: absolute;
+    right: 0.5%;
+    bottom:0%;
+}
+
+.img-container {
+  position: relative
+}
