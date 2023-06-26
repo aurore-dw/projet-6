@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tricks{% endblock %}
+
+{% block body %}
+    <div class="container d-flex align-items-center justify-content-center vh-80" style="margin-top: 50px;">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <div class="btn-group">
+                        <a href="{{ path('app_tricks_edit', {'id': trick.id}) }}" class="btn btn-secondary"><i class="fas fa-pencil-alt"></i></a>
+                        {% if app.user is not null %}
+                        <a href="{{ path('app_tricks_delete', {'id': trick.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce trick ?')">
+                        <i class="fas fa-trash-alt"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            <h1>{{ trick.name }}</h1>
+            {% if trick.pictures is not empty %}
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="{{ asset('/uploads/pictures/' ~ trick.pictures|first) }}" class="img-fluid" alt="Picture" style="max-height: 400px; object-fit: cover;">
+                </div>
+            </div>
+            {% endif %}
+            {% if trick.pictures|length > 1 %}
+            <div class="row mt-3">
+                {% for picture in trick.pictures|slice(1) %}
+                <div class="col-md-2">
+                    <img src="{{ asset('/uploads/pictures/' ~ picture) }}" class="img-fluid" alt="Picture" style="max-height: 200px; object-fit: cover;">
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if trick.videos is not empty %}
+            <div class="row mt-3">
+                {% for video in trick.videos %}
+                <div class="col-md-3">
+                    <iframe width="100%" height="200" src="{{ video }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <p>{{ trick.description }}</p>
+            <p>Crée le : {{ trick.createAt ? trick.createAt|date('Y-m-d H:i:s') : '' }}</p>
+            <p>Mis a jour le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p>
+            <p>Catégorie : {{ trick.category }}</p>
+
+            <a href="{{ path('app_tricks_index') }}">Retour à la liste des figures</a>
+
+            {{ include('tricks/_delete_form.html.twig') }}
+            {% if app.user is not null %}
+            <a href="{{ path('app_comment_new', {'id': trick.id}) }}">Ajouter un commentaire</a>
+            {% else %}
+            <p>Vous devez créer un compte / vous connecter pour déposer un commentaire.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{# Comments #}
+<section class="flex flex-col gap-4 px-6 py-4">
+    {% set commentsToShow = trick.comments|slice(0, 5) %}
+    {% for comment in commentsToShow %}
+        <article class="rounded bg-white shadow px-6 py-4">
+            {% if comment.user %}
+                <p>{{ comment.content }}</p>
+                <p class="text-sm text-gray-600 italic">{{ comment.user.username }}</p>
+                <img src="{{ comment.user.profilePicture }}">
+            {% endif %}
+        </article>
+    {% endfor %} 
+</section>
+
+{% if trick.comments|length >= 5 %}
+    <button id="load-more-comments" data-trick-id="{{ trick.id }}" data-offset="5">Voir plus de commentaires</button>
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#load-more-comments').click(function() {
+            var trickId = $(this).data('trick-id');
+            var offset = $(this).data('offset');
+            var url = '/comment/load/' + trickId + '?offset=' + offset;
+
+            // Effectuez une requête Ajax pour charger les commentaires supplémentaires
+            $.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var comments = response;
+
+                    // Ajoutez les commentaires à la section des commentaires
+                    var commentsSection = $('.flex.flex-col.gap-4.px-6.py-4');
+                    $.each(comments, function(index, comment) {
+                        var article = $('<article>').addClass('rounded bg-white shadow px-6 py-4').html(`
+                            <p>${comment.content}</p>
+                            <p class="text-sm text-gray-600 italic">${comment.user}</p>
+                        `);
+
+                        // Vérifie si l'image de profil de l'utilisateur est disponible
+                        if (comment.user.profilePicture) {
+                            var profilePicture = $('<img>').attr('src', comment.user.profilePicture);
+                            article.find('.comment-username').after(profilePicture);
+                        }
+
+                        commentsSection.append(article);
+                    });
+
+                    // Mettez à jour la valeur de l'attribut data-offset pour le bouton de chargement des commentaires
+                    offset += 5;
+                    $('#load-more-comments').data('offset', offset);
+
+                    // Vérifiez si d'autres commentaires sont disponibles
+                    if (comments.length < 5) {
+                        $('#load-more-comments').hide();
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
