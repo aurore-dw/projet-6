@@ -14,6 +14,7 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
+    .addEntry('appli', './assets/js/main.js')
 
     /*
      * ENTRY CONFIG
