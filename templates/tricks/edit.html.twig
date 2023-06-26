@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Tricks{% endblock %}
+
+{% block body %}
+    <br>
+    <h1 style="text-align:center;">Modifier une figure</h1>
+
+    {{ include('tricks/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('app_tricks_index') }}">Retour à la liste</a>
+
+    {{ include('tricks/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+    // Soumettre le formulaire avec les images à supprimer sélectionnées
+    $('form').submit(function(e) {
+        // Sélectionne les cases à cocher cochées
+        var selectedPictures = $('input[name="remove_pictures[]"]:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        // Ajoute les valeurs sélectionnées à un champ caché dans le formulaire
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'selected_pictures',
+            value: JSON.stringify(selectedPictures)
+        }).appendTo($(this));
+
+        return true; // Continue la soumission du formulaire
+    });
+});
+
+        
+    </script>
+{% endblock %}
