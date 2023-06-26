@@ -3,7 +3,6 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<br><br><br><br><br><br>
 <form method="post">
     {% if error %}
     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -11,7 +10,7 @@
 
     {% if app.user %}
     <div class="mb-3">
-        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Se deconnecter</a>
     </div>
     {% endif %}
     <div class="container py-5 h-100">
@@ -46,7 +45,7 @@
                 </button>
 
                 <div class="col text-center">
-                  <a href="#!">Mot de passe oublié ?</a>
+                  <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
               </div>
               <div class="text-center">
                 <p>Pas enregistré ? <a href="#!">Créer un compte</a></p>
@@ -57,5 +56,6 @@
 <br><br><br><br>
 </form>
 {% endblock %}
+
 
 
