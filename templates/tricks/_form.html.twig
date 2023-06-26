@@ -1,0 +1,45 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="form-group">
+                {{ form_label(form.name, 'Nom') }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <br>
+            <div class="form-group">
+                {{ form_label(form.description, 'Description') }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <br>
+            <div class="form-group">
+                {{ form_label(form.pictures, 'Images') }}
+                {{ form_widget(form.pictures, {'attr': {'class': 'form-control-file', 'multiple': true}}) }}
+            </div>
+            <br>
+            <div class="form-group">
+                {{ form_label(form.videos, 'Videos') }}
+                {{ form_widget(form.videos, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <br>
+            <div class="form-group">
+                {{ form_label(form.category, 'Catégorie') }}
+                {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <br>
+            {{ form_widget(form._token) }}
+            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+
+            {% if trick.pictures is defined and trick.pictures is not empty %}
+            <h3>Images existantes :</h3>
+            <ul>
+                {% for picture in trick.pictures %}
+                <li><img src="{{ asset('/uploads/pictures/' ~ picture) }}" alt="Picture">
+                <input type="checkbox" name="remove_pictures[]" value="{{ picture }}"> Supprimer</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
