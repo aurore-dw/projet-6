@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Tricks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -61,6 +62,16 @@ class CommentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function deleteCommentsByTrick(Tricks $trick): void
+    {
+        $comments = $this->createQueryBuilder('c')
+            ->delete()
+            ->where('c.trick = :trick')
+            ->setParameter('trick', $trick)
+            ->getQuery()
+            ->execute();
     }
 
 //    /**

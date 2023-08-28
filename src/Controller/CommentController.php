@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 #[Route('/comment')]
@@ -23,13 +24,13 @@ class CommentController extends AbstractController
     #[Route('/', name: 'app_comment_index', methods: ['GET'])]
     public function index(CommentRepository $commentRepository, Tricks $trick, TricksRepository $tricksRepository, $id): Response
     {
-        return $this->render('comment/index.html.twig', [
+        return $this->render('tricks/show.html.twig', [
             'comments' => $commentRepository->findAll(),
         ]);
     }
 
     #[Route('/new/{id}', name: 'app_comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CommentRepository $commentRepository, SecurityController $lastUsername, Tricks $trick, TricksRepository $tricksRepository, $id): Response
+    public function new(Request $request, CommentRepository $commentRepository, SecurityController $lastUsername, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -42,13 +43,15 @@ class CommentController extends AbstractController
             $trick = $tricksRepository->find($id);
             $comment->setTrick($trick);
             $commentRepository->save($comment, true);
+            $successMessageComment = $session->getFlashBag()->get('successMessageComment', []);
 
             return $this->redirectToRoute('app_tricks_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('comment/new.html.twig', [
             'comment' => $comment,
-            'form' => $form,
+            'form' => $form->createView(),
+            'successMessageComment' => $successMessageComment,
         ]);
     }
 
@@ -95,19 +98,22 @@ class CommentController extends AbstractController
        $offset = $request->query->get('offset', 0);
        $limit = 5;
 
-    // Récupération des commentaires en utilisant la méthode personnalisée du repository
+        // Récupération des commentaires en utilisant la méthode personnalisée du repository
        $trick = $tricksRepository->find($id);
        $comments = $commentRepository->findPaginatedCommentsByTrick($trick, $offset, $limit);
 
        $commentsArray = [];
        foreach ($comments as $comment) {
-        $commentsArray[] = [
-            'id' => $comment->getId(),
-            'content' => $comment->getContent(),
-            'create_at' => $comment->getCreateAt()->format('Y-m-d H:i:s'),
-            'user' => $comment->getUser()->getUsername(),
-            
-        ];
+            $user = $comment->getUser();
+            $username = $user ? $user->getUsername() : 'Utilisateur inconnu';
+            $profile_picture = $user ? $user->getProfilePicture() : 'assets/img/profiles/default.jpg' ;
+            $commentsArray[] = [
+                'id' => $comment->getId(),
+                'content' => $comment->getContent(),
+                'createAt' => $comment->getCreateAt()->format('d-m-Y H:i:s'),
+                'user' => $username,
+                'profilePicture' => $profile_picture,
+            ];
     }
 
     // Retournez les commentaires sous forme de JSON
