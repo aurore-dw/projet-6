@@ -2,7 +2,7 @@
 
 #mainNav{
     background-color: black!important;
-    position:sticky!important;
+    position:fixed!important;
 }
 #mainNav a{
     color:white!important;
@@ -20,9 +20,73 @@
 .chevron-down{
     position: absolute;
     right: 0.5%;
-    bottom:0%;
+    bottom:5%;
 }
 
 .img-container {
   position: relative
 }
+
+.trick-edit-picture{
+    width: 250px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    transition: transform 0.3s ease-in-out; 
+}
+
+.trick-edit-picture:hover {
+    transform: scale(2.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.remove-checkbox {
+    margin-left: 10px;
+}
+
+.list-pictures{
+    list-style-type: none;
+    padding: 0;
+}
+
+.group-button{
+    align-items: center;
+}
+
+.custom-card-size {
+    height: 300px;
+}
+
+.custom-picture-size {
+    height: 200px; 
+    object-fit: cover;
+}
+
+.scroll-top-container {
+  position: absolute;
+  right: 20px;
+  z-index: 9999; 
+}
+
+.scroll-top {
+  visibility: hidden;
+  bottom:10px;
+}
+
+.separator {
+  height: 1px; /* Définit la hauteur de la ligne */
+  background-color: grey; /* Définit la couleur de fond de la ligne */
+}
+
+
+@media (max-width: 768px) {
+    .media-container {
+        display: none;
+        margin: 5px 0;
+    }
+}
+
+
+
