@@ -12,6 +12,19 @@ Encore
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
+
+    .copyFiles([
+        {
+            from: './assets/img/tricks',
+            to: 'pictures/tricks/[path][name].[ext]',
+            pattern: /\.(png|jpg|jpeg|svg|pdf|ico|mp4|webp|webm)$/
+        },
+        {
+            from: './assets/img/profiles',
+            to: 'pictures/profiles/[path][name].[ext]',
+            pattern: /\.(png|jpg|jpeg|svg|pdf|ico|mp4|webp|webm)$/
+        }
+    ])
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
     .addEntry('appli', './assets/js/main.js')
@@ -34,6 +47,17 @@ Encore
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
+    .addRule({
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        exclude: /\/tmp\//,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            outputPath: 'images',
+        },
+    }],
+    })
+
     /*
      * FEATURE CONFIG
      *
@@ -41,6 +65,7 @@ Encore
      * list of features, see:
      * https://symfony.com/doc/current/frontend.html#adding-more-features
      */
+    .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
