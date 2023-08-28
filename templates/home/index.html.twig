@@ -5,7 +5,25 @@
 {% block body %}
 
     {% include 'home/accueil.html.twig' %}
+
+    {% if successMessage is not empty %}
+        <div class="alert alert-success">
+            {{ successMessage[0] }}
+        </div>
+    {% endif %}
+
+    {% if successMessageEdit is not empty %}
+        <div class="alert alert-success">
+            {{ successMessageEdit[0] }}
+        </div>
+    {% endif %}
+
+    {% if successMessageDelete is not empty %}
+        <div class="alert alert-danger">
+            {{ successMessageDelete[0] }}
+        </div>
+    {% endif %}
+    
     {% include 'home/tricks.html.twig' %}
     
-
 {% endblock %}
