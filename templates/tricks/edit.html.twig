@@ -8,9 +8,7 @@
 
     {{ include('tricks/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    <a href="{{ path('app_tricks_index') }}">Retour à la liste</a>
-
-    {{ include('tricks/_delete_form.html.twig') }}
+    <a href="{{ path('app_tricks_index') }}" class="btn btn-primary" style="margin-bottom:10px">Retour</a>
 {% endblock %}
 
 {% block javascripts %}
@@ -18,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-    // Soumettre le formulaire avec les images à supprimer sélectionnées
+    // Soumet le formulaire avec les images à supprimer sélectionnées
     $('form').submit(function(e) {
         // Sélectionne les cases à cocher cochées
         var selectedPictures = $('input[name="remove_pictures[]"]:checked').map(function() {
@@ -34,8 +32,6 @@
 
         return true; // Continue la soumission du formulaire
     });
-});
-
-        
+});    
     </script>
 {% endblock %}
