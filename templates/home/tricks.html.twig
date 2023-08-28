@@ -1,0 +1,105 @@
+{% block body %}
+
+<br>
+    {% if app.user is not null %}
+    <div style="text-align:center">
+        <a href="{{ path('app_tricks_new') }}" class="btn btn-primary" style="margin-left:10px;">Créer un nouveau trick</a>
+    </div>
+    {% endif %}
+    <div id="tricks-container" class="row" style="margin-top:20px;padding:10px;">
+        {% for trick in tricks %}
+    <div class="col-md-3 col-sm-4">
+        <div class="card mb-4 custom-card-size">
+            {% if trick.pictures is not empty %}
+                <img src="{{ asset('build/pictures/tricks/' ~ trick.pictures|first) }}" alt="Picture" class="card-img-top custom-picture-size">
+            {% endif %}
+                <div class="card-body">
+                    <a href="{{ path('app_tricks_show', {'id': trick.id}) }}" class="btn btn-outline-info btn-sm">
+                        <h5 class="card-title">{{ trick.name }}</h5>
+                    </a>
+                    <div class="group-button d-flex justify-content-end">
+                        {% if app.user is not null %}
+                            <a href="{{ path('app_tricks_edit', {'id': trick.id}) }}" class="btn btn-secondary"><i class="fas fa-pencil-alt"></i></a>
+                            {% if app.user == trick.user %}
+                            {{ include ('tricks/_delete_form.html.twig', {'id': trick.id}) }}
+                            {% endif %}
+                        {% endif %}
+                    </div>      
+                </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    </div>
+
+<div id="load-more-container" class="text-center" style="margin-top: 20px;">
+  <button id="load-more-tricks" class="btn btn-primary" style="margin-bottom:10px;">Charger plus</button>
+  <div id="scroll-top-container" class="scroll-top-container">
+    <a href="#tricks" class="scroll-top">
+      <i class="fas fa-chevron-up fa-4x chevron-up"></i>
+    </a>
+  </div>  
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var loadedTricks = {{ tricks|length }};
+        var totalTricks = {{ totalTricks }};
+        var tricksPerPage = 8;
+
+        $('#load-more-tricks').click(function() {
+            var loadMoreBtn = $(this);
+            var offset = loadedTricks;
+            var remainingTricks = totalTricks - loadedTricks;
+
+            if (remainingTricks <= 0) {
+                loadMoreBtn.hide();
+                return;
+            }
+
+            var url = '{{ path('load_more_tricks') }}' + '?offset=' + offset;
+
+            // Requête Ajax pour charger les tricks supplémentaires
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    var tricksContainer = $('#tricks-container');
+                    tricksContainer.append(response);
+
+                    loadedTricks += tricksPerPage;
+
+                    if (remainingTricks <= tricksPerPage) {
+                        loadMoreBtn.hide();
+                    }
+                },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    });
+});
+
+    // Écouteur d'événement pour le bouton "Load More"
+    $('#load-more-btn').on('click', loadMoreTricks);
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
