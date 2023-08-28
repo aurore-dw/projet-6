@@ -52,7 +52,6 @@ class Tricks
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        //$this->pictures = new ArrayCollection();
         $this->pictures = [];
         $this->videos = [];
     }
@@ -139,10 +138,16 @@ class Tricks
 
     public function addPicture(string $picture): self
     {
-        if (!in_array($picture, $this->pictures ?? [], true)) {
+        if (!in_array($picture, $this->pictures ?? [], true) && !$this->isTemporaryPicture($picture)) {
             $this->pictures[] = $picture;
         }
         return $this;
+    }
+
+    private function isTemporaryPicture(string $picture): bool
+    {
+    // Vérifie si le chemin d'image est temporaire
+    return substr($picture, -4) === '.tmp';
     }
 
     public function removePicture(string $picture): self
