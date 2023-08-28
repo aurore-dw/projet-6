@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Comment{% endblock %}
+{% block title %}Nouveau commentaire{% endblock %}
 
 {% block body %}
+    <br>
     <h1>Laisser un commentaire</h1>
 
     {{ include('comment/_form.html.twig') }}
 
-    <a href="{{ path('app_comment_index') }}">back to list</a>
+    <a href="{{ path('app_comment_index') }}">Retour aux commentaires</a>
 {% endblock %}
