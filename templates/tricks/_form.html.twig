@@ -17,6 +17,16 @@
                 {{ form_widget(form.pictures, {'attr': {'class': 'form-control-file', 'multiple': true}}) }}
             </div>
             <br>
+            {% if trick.pictures is defined and trick.pictures is not empty %}
+            <h4>Images existantes :</h3>
+            <ul class="list-pictures">
+                {% for picture in trick.pictures %}
+                <li><img src="{{ asset('build/pictures/tricks/' ~ picture) }}" alt="Picture" class="trick-edit-picture">
+                <input type="checkbox" name="remove_pictures[]" value="{{ picture }}" class="remove-checkbox"> Supprimer</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <br>
             <div class="form-group">
                 {{ form_label(form.videos, 'Videos') }}
                 {{ form_widget(form.videos, {'attr': {'class': 'form-control'}}) }}
@@ -29,16 +39,6 @@
             <br>
             {{ form_widget(form._token) }}
             <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-
-            {% if trick.pictures is defined and trick.pictures is not empty %}
-            <h3>Images existantes :</h3>
-            <ul>
-                {% for picture in trick.pictures %}
-                <li><img src="{{ asset('/uploads/pictures/' ~ picture) }}" alt="Picture">
-                <input type="checkbox" name="remove_pictures[]" value="{{ picture }}"> Supprimer</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
         </div>
     </div>
 </div>
