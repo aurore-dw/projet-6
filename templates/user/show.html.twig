@@ -3,40 +3,58 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>Profil de {{ user.username }}</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>IsVerified</th>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Profile_picture</th>
-                <td>{{ user.profilePicture }}<img src="{{ asset('img/uploads/avatars/' ~ user.profilePicture) }}"></img></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_user_index') }}">Retour</a>
-
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier le profil</a>
-
-    {{ include('user/_delete_form.html.twig') }}
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto text-center">
+                <h1>Profil de {{ user.username }}</h1>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Email</h5>
+                        <p class="card-text">{{ user.email }}</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Nom d'utilisateur</h5>
+                        <p class="card-text">{{ user.username }}</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Role</h5>
+                        <p class="card-text">{{ user.roles ? 'Utilisateur' : '' }}</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Compte vérifié</h5>
+                        <p class="card-text">{{ user.isVerified ? 'Oui' : 'Non' }}</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Photo de profil</h5>
+                        <img src="{{ asset('build/pictures/profiles/' ~ user.profilePicture) }}" class="img-fluid" alt="Profile Picture">
+                    </div>
+                </div>
+                <br>
+                <div class="text-center">
+                    <div class="d-inline-block">
+                        <a class="btn btn-primary mr-2" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier le profil</a>
+                    </div>
+                    <div class="d-inline-block">
+                        {{ include('user/_delete_form.html.twig') }}
+                    </div>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+

@@ -3,11 +3,10 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Editer le profil</h1>
+    <br><br>
+    <h1 style="text-align:center;">Editer le profil</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('user/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
     <a href="{{ path('app_user_index') }}">Retour à la liste des profils</a>
-
-    {{ include('user/_delete_form.html.twig') }}
 {% endblock %}
