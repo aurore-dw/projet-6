@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -41,8 +44,27 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, Security $security, UserRepository $userRepository, SessionInterface $session): Response
     {
+        $user = $security->getUser();
+        //Si aucun utilisateur de connecté
+        if (!$user) {
+            // On redirige vers la page de connexion
+            return $this->redirectToRoute('app_home');
+        }
+        $userId = $user->getId();
+
+        if (!$userId) {
+            // On redirige vers la page de connexion
+            return $this->redirectToRoute('app_home');
+        }
+
+        $user = $userRepository->find($userId);
+
+        if (!$user) {
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -71,7 +93,7 @@ class UserController extends AbstractController
 
             $userRepository->save($user, true);
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/edit.html.twig', [
