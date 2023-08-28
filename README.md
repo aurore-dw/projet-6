@@ -1,1 +1,1 @@
-# projet-6
+Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a745e1244bf5a71385e2102359f6)](https://app.codacy.com/gh/aurore-dw/projet-6/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
