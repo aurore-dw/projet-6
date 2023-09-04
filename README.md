@@ -7,6 +7,6 @@ Guide d'installation :
 - Configurez vos variables d'environnement tel que la connexion à la base de données dans le fichier .env
 - Téléchargez et installez les dépendances back-end du projet avec Composer : composer instal
 - Créer un build d'assets grâce à Webpack Encore avec yarn : yarn run build
-- Mettre en place la base de donnée : php bin/console doctrine:database:create
+- Mettre en place la base de donnée : php bin/console doctrine:database:create et 
                                       php bin/console doctrine:migrations:migrate
 - Implémenter les fixturer : php bin/console doctrine:fixtures:load
