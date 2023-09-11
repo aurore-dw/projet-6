@@ -9,7 +9,7 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 
 2. Configurez vos variables d'environnement tel que la connexion à la base de données dans le fichier .env
   
-3. Téléchargez et installez les dépendances back-end du projet avec Composer
+3. Dans le projet, téléchargez et installez les dépendances back-end
 - `composer install`
 - `yarn install`
 
