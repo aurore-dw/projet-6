@@ -18,7 +18,7 @@ class AppFixtures extends Fixture
         
         $faker = Faker\Factory::create('fr_FR');
         $categoriesDemoName = ['Grabs', 'Rotations', 'Flips', 'Rotations désaxées', 'Slides', 'One foot', 'Old school'];
-        $tricksDemoName = ['Mute', 'Indy', '360', '720', 'Backflip', 'Misty', 'Tail slide', 'Method air', 'Backside air'];
+        $tricksDemoName = ['Mute', 'Indy', '360', '720', 'Backflip', 'Misty', 'Tail slide', 'Method air', 'Backside air', 'Rider', 'One Foot', 'Switch Backside Rodeo 720', 'Nose Grab', 'Truck Driver', '1080', '540', 'Seat Belt', 'Sad'];
 
         //Creation d'un utilisateur
         $user=new User();
@@ -26,6 +26,7 @@ class AppFixtures extends Fixture
             ->setPassword(password_hash("1234", PASSWORD_DEFAULT))
             ->setEmail($faker->safeEmail())
             ->setRoles((array)'ROLE_USER')
+            ->setIsVerified(true)
             ->setProfilePicture('default.jpg');
         $manager->persist($user); 
 
@@ -42,16 +43,18 @@ class AppFixtures extends Fixture
 
             // 3 images par trick
             for ($k=1; $k<4; $k++){
-                $trick->addPicture('default.jpg');
+                $trick->addPicture('default.webp');
+                $trick->addPicture('default2.webp');
+                $trick->addPicture('default3.jpg');
             }
 
             // 1 à 4 vidéos par trick
             for ($l=0; $l<mt_rand(1, 4); $l++){
-                $trick->setVideos('https://www.youtube.com/embed/SFYYzy0UF-8');
+                $trick->setVideos('https://www.youtube.com/embed/SFYYzy0UF-8, https://www.youtube.com/embed/SFYYzy0UF-8');
             }
 
-            // 0 à 10 commentaires par trick
-            for ($m=0; $m<mt_rand(0, 10); $m++){
+            // 0 à 15 commentaires par trick
+            for ($m=0; $m<mt_rand(0, 15); $m++){
                 $comment = new Comment();
                 $comment->setContent($faker->sentence(mt_rand(1, 3)))
                     ->setCreateAt(new \Datetime())
