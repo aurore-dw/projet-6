@@ -25,4 +25,6 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 7. Démarrer le serveur web local de Symfony
 - `symfony server: start`
 
+8. Accéder à l'application, généralement `http://localhost:8000`
+
 
