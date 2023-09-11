@@ -25,7 +25,7 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 - `php bin/console doctrine:fixtures:load`
 
 7. Démarrer le serveur web local de Symfony
-- `symfony server: start`
+- `symfony server:start`
 
 8. Lancer Webpack encore
 - `yarn run watch`
