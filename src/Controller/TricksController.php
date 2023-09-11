@@ -197,7 +197,7 @@ class TricksController extends AbstractController
             }
 
                 // Mise à jour des vidéos
-                $newVideoLinks = $form->get('videos')->getData();
+            $newVideoLinks = $form->get('videos')->getData();
                 $videoLinks = explode(',', $newVideoLinks); // Séparer les liens vidéo par une virgule
                 $trick->setVideos($videoLinks);
                 // Met à jour l'entité Tricks avec les images restantes
@@ -217,55 +217,55 @@ class TricksController extends AbstractController
                         $nextImageNumber++;
                     }
                 }
-            
+                
 
             // Met à jour la date de mise à jour
-            $trick->setUpdateAt(new \DateTime());
+                $trick->setUpdateAt(new \DateTime());
 
             // Enregistre les modifications dans la base de données
-            $tricksRepository->save($trick, true);
+                $tricksRepository->save($trick, true);
 
             // Ajoute un message de succès dans la session
-            $session->getFlashBag()->add('successEdit', 'Le trick a été modifié avec succès !');
+                $session->getFlashBag()->add('successEdit', 'Le trick a été modifié avec succès !');
 
             //return $this->redirectToRoute('app_tricks_index', [], Response::HTTP_SEE_OTHER);
-            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
-        }
+                return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+            }
 
-        return $this->renderForm('tricks/edit.html.twig', [
-            'trick' => $trick,
-            'form' => $form,
-        ]);
-    }
-    //Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
-    private function getImageNumberFromName(string $imageName): ?int
-    {
-        $imageName = pathinfo($imageName, PATHINFO_FILENAME);
-        if (preg_match('/_\d+$/', $imageName, $matches)) {
-            return (int)trim($matches[0], '_');
+            return $this->renderForm('tricks/edit.html.twig', [
+                'trick' => $trick,
+                'form' => $form,
+            ]);
         }
-        return null;
-    }
+    //Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
+        private function getImageNumberFromName(string $imageName): ?int
+        {
+            $imageName = pathinfo($imageName, PATHINFO_FILENAME);
+            if (preg_match('/_\d+$/', $imageName, $matches)) {
+                return (int)trim($matches[0], '_');
+            }
+            return null;
+        }
 
     #[Route('/delete/{id}', name: 'app_tricks_delete', methods: ['POST'])]
-    public function delete(Request $request, Tricks $trick, TricksRepository $tricksRepository, CommentRepository $commentRepository, SessionInterface $session, SecurityController $lastUsername): Response
-    {
+        public function delete(Request $request, Tricks $trick, TricksRepository $tricksRepository, CommentRepository $commentRepository, SessionInterface $session, SecurityController $lastUsername): Response
+        {
         //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
-        $user = $lastUsername->getUser();
-        if (!$user || !$user->isVerified()) {
-            $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
-            return $this->redirectToRoute('app_login');
-        }
+            $user = $lastUsername->getUser();
+            if (!$user || !$user->isVerified()) {
+                $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
+                return $this->redirectToRoute('app_login');
+            }
 
-        if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
+            if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
             //Supprime les commentaires liés au trick
-            $commentRepository->deleteCommentsByTrick($trick);
+                $commentRepository->deleteCommentsByTrick($trick);
             //Supprime le trick
-            $tricksRepository->remove($trick, true);
+                $tricksRepository->remove($trick, true);
             // Ajoute un message de succès dans la session
-            $session->getFlashBag()->add('danger', 'Le trick a été supprimé avec succès !');
-        }
+                $session->getFlashBag()->add('danger', 'Le trick a été supprimé avec succès !');
+            }
 
-        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        }
     }
-}
