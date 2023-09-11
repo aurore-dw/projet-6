@@ -19,6 +19,7 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 5. Mettre en place la base de donnée
 - `php bin/console doctrine:database:create`
 - `php bin/console doctrine:migrations:migrate`
+- `php bin/console doctrine:schema:update --force`
 
 6. Implémenter les fixtures
 - `php bin/console doctrine:fixtures:load`
