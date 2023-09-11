@@ -5,7 +5,7 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 ## Guide d'installation :
 
 1. Clonez ou télécharger le repository GitHub
-> git clone https://github.com/aurore-dw/projet-6.git
+`git clone https://github.com/aurore-dw/projet-6.git`
 
 2. Configurez vos variables d'environnement tel que la connexion à la base de données dans le fichier .env
   
@@ -19,5 +19,10 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 > php bin/console doctrine:database:create
 > php bin/console doctrine:migrations:migrate
 
-6. Implémenter les fixturer
+6. Implémenter les fixtures
 > php bin/console doctrine:fixtures:load
+
+7. Démarrer le serveur web local de Symfony
+> symfony server: start
+
+
