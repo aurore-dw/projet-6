@@ -4,6 +4,7 @@
     background-color: black!important;
     position:fixed!important;
 }
+
 #mainNav a{
     color:white!important;
 }
@@ -80,6 +81,21 @@
   background-color: grey; /* Définit la couleur de fond de la ligne */
 }
 
+.error-message{
+  color: red;
+}
+
+.help-message{
+   font-size: 13px;
+   font-style: italic;     
+}
+
+.custom-arrow{
+    position:absolute;
+    right:10px;
+    bottom:0%;
+
+}
 
 @media (max-width: 768px) {
     .media-container {
