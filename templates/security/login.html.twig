@@ -3,16 +3,22 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
+
 <form method="post">
-    {% if error %}
-    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <br><br>
 
     {% if app.user %}
     <div class="mb-3">
-        Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Se deconnecter</a>
+        Vous êtes connecté en tant que {{ app.user.userIdentifier }} <a href="{{ path('app_logout') }}" class="btn btn-primary">Se deconnecter</a>
     </div>
     {% endif %}
+
+    {% if app.flashes('error') is not empty %}
+    <div class="alert alert-danger">
+        <span>Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.</span>
+    </div>
+    {% endif %}
+
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
