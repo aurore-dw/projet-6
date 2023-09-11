@@ -35,17 +35,6 @@ class CommentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /*public function findFirstTenCommentsByTrick($trick, $limit)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.trick = :trick')
-            ->setParameter('trick', $trick)
-            ->orderBy('c.createAt', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }*/
-
     public function save(Comment $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
