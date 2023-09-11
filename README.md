@@ -10,19 +10,19 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 2. Configurez vos variables d'environnement tel que la connexion à la base de données dans le fichier .env
   
 3. Téléchargez et installez les dépendances back-end du projet avec Composer
-> composer instal
+- `composer instal`
 
 4. Créer un build d'assets grâce à Webpack Encore avec yarn
-> yarn run build
+- `yarn run build`
 
 5. Mettre en place la base de donnée
-> php bin/console doctrine:database:create
-> php bin/console doctrine:migrations:migrate
+- `php bin/console doctrine:database:create`
+- `php bin/console doctrine:migrations:migrate`
 
 6. Implémenter les fixtures
-> php bin/console doctrine:fixtures:load
+- `php bin/console doctrine:fixtures:load`
 
 7. Démarrer le serveur web local de Symfony
-> symfony server: start
+- `symfony server: start`
 
 
