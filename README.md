@@ -10,7 +10,8 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 2. Configurez vos variables d'environnement tel que la connexion à la base de données dans le fichier .env
   
 3. Téléchargez et installez les dépendances back-end du projet avec Composer
-- `composer instal`
+- `composer install`
+- `yarn install`
 
 4. Créer un build d'assets grâce à Webpack Encore avec yarn
 - `yarn run build`
@@ -25,6 +26,9 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 7. Démarrer le serveur web local de Symfony
 - `symfony server: start`
 
-8. Accéder à l'application, généralement `http://localhost:8000`
+8. Lancer Webpack encore
+- `yarn run watch`
+
+10. Accéder à l'application, généralement `http://localhost:8000`
 
 
