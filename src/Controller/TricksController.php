@@ -63,6 +63,13 @@ class TricksController extends AbstractController
     #[Route('/new', name: 'app_tricks_new', methods: ['GET', 'POST'])]
     public function new(Request $request, TricksRepository $tricksRepository, SecurityController $lastUsername, SessionInterface $session): Response
     {
+        //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
+        $user = $lastUsername->getUser();
+        if (!$user || !$user->isVerified()) {
+            $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
+            return $this->redirectToRoute('app_login');
+        }
+        
         $trick = new Tricks();
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
@@ -133,7 +140,7 @@ class TricksController extends AbstractController
             $trick = $tricksRepository->find($id);
             $comment->setTrick($trick);
             $commentRepository->save($comment, true);
-            return $this->redirectToRoute('app_tricks_show', ['id' => $trick->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_tricks_show', ['id' => $trick->getId(), '_fragment' => 'comment-section'], Response::HTTP_SEE_OTHER);
         }
         return $this->render('tricks/show.html.twig', [
             'trick' => $trick,
@@ -142,8 +149,15 @@ class TricksController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_tricks_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session): Response
+    public function edit(Request $request, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session, SecurityController $lastUsername): Response
     {
+        //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
+        $user = $lastUsername->getUser();
+        if (!$user || !$user->isVerified()) {
+            $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
+            return $this->redirectToRoute('app_login');
+        }
+
         // Récupére les images existantes
         $existingPictures = $trick->getPictures();
         $form = $this->createForm(TricksType::class, $trick, [
@@ -160,6 +174,7 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             // Supprime les images sélectionnées
             $selectedPictures = $request->request->get('selected_pictures');
             $selectedPictures = json_decode($selectedPictures, true);
@@ -179,6 +194,7 @@ class TricksController extends AbstractController
                         unset($existingPictures[$index]);
                     }
                 }
+            }
 
                 // Mise à jour des vidéos
                 $newVideoLinks = $form->get('videos')->getData();
@@ -189,7 +205,6 @@ class TricksController extends AbstractController
 
                 // Gérer les nouvelles images
                 $uploadedPictures = $form->get('pictures')->getData();
-                dd($uploadedPictures);
                 $nextImageNumber = $deletedImageNumber ?? count($existingPictures) + 1;
                 foreach ($uploadedPictures as $uploadedPicture) {
                     if ($uploadedPicture->isValid() && $uploadedPicture->getError() === UPLOAD_ERR_OK) {
@@ -202,7 +217,7 @@ class TricksController extends AbstractController
                         $nextImageNumber++;
                     }
                 }
-            }
+            
 
             // Met à jour la date de mise à jour
             $trick->setUpdateAt(new \DateTime());
@@ -233,8 +248,15 @@ class TricksController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_tricks_delete', methods: ['POST'])]
-    public function delete(Request $request, Tricks $trick, TricksRepository $tricksRepository, CommentRepository $commentRepository, SessionInterface $session): Response
+    public function delete(Request $request, Tricks $trick, TricksRepository $tricksRepository, CommentRepository $commentRepository, SessionInterface $session, SecurityController $lastUsername): Response
     {
+        //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
+        $user = $lastUsername->getUser();
+        if (!$user || !$user->isVerified()) {
+            $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
+            return $this->redirectToRoute('app_login');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
             //Supprime les commentaires liés au trick
             $commentRepository->deleteCommentsByTrick($trick);
