@@ -95,25 +95,25 @@ class CommentController extends AbstractController
     #[Route('/load/{id}', name: 'app_load_comments', methods: ['GET'])]
     public function loadCommentsAction(Request $request, PaginatorInterface $paginator, Tricks $trick, TricksRepository $tricksRepository, $id, CommentRepository $commentRepository): JsonResponse
     {
-       $offset = $request->query->get('offset', 0);
-       $limit = 5;
+     $offset = $request->query->get('offset', 0);
+     $limit = 5;
 
         // Récupération des commentaires en utilisant la méthode personnalisée du repository
-       $trick = $tricksRepository->find($id);
-       $comments = $commentRepository->findPaginatedCommentsByTrick($trick, $offset, $limit);
+     $trick = $tricksRepository->find($id);
+     $comments = $commentRepository->findPaginatedCommentsByTrick($trick, $offset, $limit);
 
-       $commentsArray = [];
-       foreach ($comments as $comment) {
-            $user = $comment->getUser();
-            $username = $user ? $user->getUsername() : 'Utilisateur inconnu';
-            $profile_picture = $user ? $user->getProfilePicture() : 'assets/img/profiles/default.jpg' ;
-            $commentsArray[] = [
-                'id' => $comment->getId(),
-                'content' => $comment->getContent(),
-                'createAt' => $comment->getCreateAt()->format('d-m-Y H:i:s'),
-                'user' => $username,
-                'profilePicture' => $profile_picture,
-            ];
+     $commentsArray = [];
+     foreach ($comments as $comment) {
+        $user = $comment->getUser();
+        $username = $user ? $user->getUsername() : 'Utilisateur inconnu';
+        $profile_picture = $user ? $user->getProfilePicture() : 'assets/img/profiles/default.jpg' ;
+        $commentsArray[] = [
+            'id' => $comment->getId(),
+            'content' => $comment->getContent(),
+            'createAt' => $comment->getCreateAt()->format('d-m-Y H:i:s'),
+            'user' => $username,
+            'profilePicture' => $profile_picture,
+        ];
     }
 
     // Retournez les commentaires sous forme de JSON
