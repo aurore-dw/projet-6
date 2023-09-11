@@ -23,6 +23,11 @@ Encore
             from: './assets/img/profiles',
             to: 'pictures/profiles/[path][name].[ext]',
             pattern: /\.(png|jpg|jpeg|svg|pdf|ico|mp4|webp|webm)$/
+        },
+         {
+            from: './assets/img/home',
+            to: 'pictures/home/[path][name].[ext]',
+            pattern: /\.(png|jpg|jpeg|svg|pdf|ico|mp4|webp|webm)$/
         }
     ])
     // only needed for CDN's or subdirectory deploy
