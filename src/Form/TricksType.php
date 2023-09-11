@@ -14,14 +14,26 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Validator\Constraints\Length;
+
 
 class TricksType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    $builder
+        $builder
         ->add('name')
-        ->add('description')
+        ->add('description', TextareaType::class, [
+            'label' => 'Description',
+            'required' => true,
+            'constraints' => [
+                new Length([
+            'max' => 1000, // 
+            'maxMessage' => 'La description ne peut pas dépasser {{ limit }} caractères.',
+        ]),
+            ],
+            'attr' => ['class' => 'form-control'],
+        ])
         ->add('pictures', FileType::class, [
             'label' => 'Pictures',
             'required' => false,
@@ -34,6 +46,7 @@ class TricksType extends AbstractType
         ->add('videos', TextType::class, [
             'label' => 'Videos',
             'required' => false,
+            'help' => 'Séparez les liens vidéo par des virgules (,). Exemple : lien1, lien2, lien3',
         ])
         ->add('category');
 
@@ -48,6 +61,7 @@ class TricksType extends AbstractType
                         'label' => 'Videos',
                         'required' => false,
                         'data' => $videos,
+                        'help' => 'Séparez les liens vidéo par des virgules (,). Exemple : lien1, lien2, lien3',
                     ]);
                 }
         }); 
