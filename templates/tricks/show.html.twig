@@ -127,14 +127,16 @@
                         </div>
                     </div>
                 </div>
+                {% if trick.updateAt is not empty %}
                 <div class="col-md">
                     <div class="card mb-3">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted">Mis à jour le :</h6>
-                            <p class="card-text">{{ trick.updateAt ? trick.updateAt|date('d-m-Y H:i:s') : '' }}</p>
+                            <p class="card-text">{{ trick.updateAt|date('d-m-Y H:i:s')  }}</p>
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 <div class="col-md">
                     <div class="card mb-3">
                         <div class="card-body">
@@ -170,7 +172,7 @@
         <div class="separator"></div>
 
     
-    <section class="flex flex-col gap-4 px-6 py-4">
+    <section class="flex flex-col gap-4 px-6 py-4" id="comment-section">
     {% set commentsToShow = trick.comments|reverse|slice(0, 5) %}
         {% for comment in commentsToShow %}
         <article class="px-6 py-4">
@@ -210,17 +212,21 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
 <script>
 
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        // Gérer le clic sur le bouton de basculement
-        $('#toggle-media-button').click(function() {
-            $('.media-container').toggle();
-        });
+    // Gére le clic sur le bouton de basculement
+    $('#toggle-media-button').click(function() {
+        $('.media-container').toggle();
+    });
 
-        $('#load-more-comments').click(function() {
+    $('#load-more-comments').click(function() {
         var trickId = $(this).data('trick-id');
         var offset = $(this).data('offset');
         var url = '/comment/load/' + trickId + '?offset=' + offset;
+        // Sélectionne l'élément <img> du commentaire
+        var picComment = $('.mr-4.rounded-circle'); 
+        // Récupérez la valeur de l'attribut src de l'image
+        var srcPicture = picComment.attr('src');
 
         // Requête Ajax pour charger les commentaires
         $.ajax({
@@ -234,28 +240,28 @@
                 var commentsSection = $('.flex.flex-col.gap-4.px-6.py-4');
                 $.each(comments, function(index, comment) {
                     var article = $('<article>').addClass('px-6 py-4');
-                        if (comment.user) {
-                            var mediaDiv = $('<div>').addClass('media');
-                            var profilePicture = $('<img>').addClass('mr-4 rounded-circle').attr('alt', 'User Profile Picture').attr('src', 'build/pictures/profiles/' + comment.profilePicture).attr('style', 'width:70px;');
-                            var mediaBodyDiv = $('<div>').addClass('media-body');
-                            var rowDiv = $('<div>').addClass('row');
-                            var colDiv = $('<div>').addClass('col-8 d-flex');
-                            var username = $('<p>').html('<b>' + comment.user + '</b>');
-                            var createdAt = $('<span>').text(' - ' + (comment.createAt ? comment.createAt : ''));
-                            var commentContent = $('<p>').text(comment.content);
+                    if (comment.user) {
+                        var mediaDiv = $('<div>').addClass('media');
+                        var profilePicture = $('<img>').addClass('mr-4 rounded-circle').attr('alt', 'User Profile Picture').attr('src', srcPicture).attr('style', 'width:70px;');
+                        var mediaBodyDiv = $('<div>').addClass('media-body');
+                        var rowDiv = $('<div>').addClass('row');
+                        var colDiv = $('<div>').addClass('col-8 d-flex');
+                        var username = $('<p>').html('<b>' + comment.user + '</b>');
+                        var createdAt = $('<span>').text(' - ' + (comment.createAt ? comment.createAt : ''));
+                        var commentContent = $('<p>').text(comment.content);
 
-                            colDiv.append(username, createdAt);
-                            rowDiv.append(colDiv);
-                            mediaBodyDiv.append(rowDiv, commentContent);
-                            mediaDiv.append(profilePicture, mediaBodyDiv);
-                            article.append(mediaDiv);
-                        } else {
-                            article.append(comment.content);
-                        }
+                        colDiv.append(username, createdAt);
+                        rowDiv.append(colDiv);
+                        mediaBodyDiv.append(rowDiv, commentContent);
+                        mediaDiv.append(profilePicture, mediaBodyDiv);
+                        article.append(mediaDiv);
+                    } else {
+                        article.append(comment.content);
+                    }
 
                     commentsSection.append(article);
                     commentsSection.append('<hr>');
-            });
+                });
 
                 // Met à jour la valeur de l'attribut data-offset pour le bouton de chargement des commentaires
                 offset += 5;
@@ -270,40 +276,40 @@
                 console.error(error);
             }
         });
-        });
+    });
 
         //Permet d'afficher les images avec la taille réelle
-        $('img').click(function() {
-            var imageUrl = $(this).attr('src');
-            showOriginalImage(imageUrl);
-        });
-        //Génère un modal au clic sur l'image
-        function showOriginalImage(imageUrl) {
-            var imageElement = $('<img>').attr('src', imageUrl).css({
-                'max-width': '100%',
-                'max-height': '100%'
-            });
-
-            var modal = $('<div>').css({
-                'position': 'fixed',
-                'top': '0',
-                'left': '0',
-                'width': '100%',
-                'height': '100%',
-                'background-color': 'rgba(0, 0, 0, 0.8)',
-                'display': 'flex',
-                'justify-content': 'center',
-                'align-items': 'center'
-            }).append(imageElement);
-
-            modal.click(function() {
-                modal.remove();
-            });
-
-            $('body').append(modal);
-        }
-
+    $('img').click(function() {
+        var imageUrl = $(this).attr('src');
+        showOriginalImage(imageUrl);
     });
+        //Génère un modal au clic sur l'image
+    function showOriginalImage(imageUrl) {
+        var imageElement = $('<img>').attr('src', imageUrl).css({
+            'max-width': '100%',
+            'max-height': '100%'
+        });
+
+        var modal = $('<div>').css({
+            'position': 'fixed',
+            'top': '0',
+            'left': '0',
+            'width': '100%',
+            'height': '100%',
+            'background-color': 'rgba(0, 0, 0, 0.8)',
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center'
+        }).append(imageElement);
+
+        modal.click(function() {
+            modal.remove();
+        });
+
+        $('body').append(modal);
+    }
+
+});
 </script>
 
 {% endblock %}

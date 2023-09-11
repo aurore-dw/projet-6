@@ -39,6 +39,11 @@
 
     <div id="load-more-container" class="text-center" style="margin-top: 20px;">
         <button id="load-more-tricks" class="btn btn-primary" style="margin-bottom:20px;">Charger plus</button>
+        <div id="scroll-top-container" class="scroll-top-container">
+            <a href="#tricks-container" class="scroll-top">
+                <i class="fas fa-chevron-up fa-4x chevron-up custom-arrow"></i>
+            </a>
+        </div> 
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -69,6 +74,10 @@
                     tricksContainer.append(response);
 
                     loadedTricks += tricksPerPage;
+
+                    if (loadedTricks > 10) {
+                      $('.scroll-top').css('visibility', 'visible'); // Affiche la flèche
+                    }
 
                     if (remainingTricks <= tricksPerPage) {
                         loadMoreBtn.hide();
