@@ -4,20 +4,20 @@ Badge codacy : [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5303a
 
 ## Guide d'installation :
 
-- Clonez ou télécharger le repository GitHub
+1. Clonez ou télécharger le repository GitHub
 > git clone https://github.com/aurore-dw/projet-6.git
 
-- Configurez vos variables d'environnement tel que la connexion à la base de données dans le fichier .env
+2. Configurez vos variables d'environnement tel que la connexion à la base de données dans le fichier .env
   
-- Téléchargez et installez les dépendances back-end du projet avec Composer
+3. Téléchargez et installez les dépendances back-end du projet avec Composer
 > composer instal
 
-- Créer un build d'assets grâce à Webpack Encore avec yarn
+4. Créer un build d'assets grâce à Webpack Encore avec yarn
 > yarn run build
 
-- Mettre en place la base de donnée
+5. Mettre en place la base de donnée
 > php bin/console doctrine:database:create
 > php bin/console doctrine:migrations:migrate
 
-- Implémenter les fixturer
+6. Implémenter les fixturer
 > php bin/console doctrine:fixtures:load
