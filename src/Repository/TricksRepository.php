@@ -16,31 +16,49 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TricksRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
+
         parent::__construct($registry, Tricks::class);
+
     }
 
+    /**
+    * Enregistre une figure
+    */
     public function save(Tricks $entity, bool $flush = false): void
     {
+
+        
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
     }
 
+    /**
+    * Supprime une figure
+    */
     public function remove(Tricks $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
     }
 
+    /**
+    * Retourne une liste des figures 
+    */
     public function findPaginatedTricks($offset, $limit)
     {
+
         return $this->createQueryBuilder('t')
             ->select('DISTINCT t')
             ->orderBy('t.create_at', 'DESC')
@@ -48,38 +66,20 @@ class TricksRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+
     }
 
+    /**
+    * Permet de compter le nombre de figures
+    */
     public function countAllTricks(): int
     {
+
         return $this->createQueryBuilder('t')
             ->select('COUNT(t.id)')
             ->getQuery()
             ->getSingleScalarResult();
+
     }
 
-//    /**
-//     * @return Tricks[] Returns an array of Tricks objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Tricks
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -176,7 +176,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addComment(Comment $comment): self
     {
-        if (!$this->comments->contains($comment)) {
+        if ($this->comments->contains($comment) === false) {
             $this->comments->add($comment);
             $comment->setUser($this);
         }
