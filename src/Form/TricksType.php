@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\Length;
 class TricksType extends AbstractType
 {
 
+    //Formulaire de création / édition d'une figure
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -70,6 +71,7 @@ class TricksType extends AbstractType
 
     }
 
+    // Configure les options
     public function configureOptions(OptionsResolver $resolver): void
     {
 
@@ -80,5 +82,5 @@ class TricksType extends AbstractType
         ]);
 
     }
-    
+
 }

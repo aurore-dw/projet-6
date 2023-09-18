@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class ResetPasswordRequestFormType extends AbstractType
 {
 
+    // Formulaire de reset de mot de passe
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -27,11 +28,12 @@ class ResetPasswordRequestFormType extends AbstractType
 
     }
 
+    //Configuration des options
     public function configureOptions(OptionsResolver $resolver): void
     {
 
         $resolver->setDefaults([]);
 
     }
-    
+
 }

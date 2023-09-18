@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class SecurityController extends AbstractController
 {
     
-    //Connexion de l'utilisateur
+    // Connexion de l'utilisateur
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -26,7 +26,7 @@ class SecurityController extends AbstractController
     }
 
     
-    //Déconnexion de l'utilisateur
+    // Déconnexion de l'utilisateur
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

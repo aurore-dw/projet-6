@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class RegistrationFormType extends AbstractType
 {
 
+    // Formulaire d'enregistrement de compte utilisateur
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -51,6 +52,7 @@ class RegistrationFormType extends AbstractType
 
     }
 
+    // Configure les options
     public function configureOptions(OptionsResolver $resolver): void
     {
 
@@ -59,5 +61,5 @@ class RegistrationFormType extends AbstractType
         ]);
 
     }
-    
+
 }
