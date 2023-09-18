@@ -63,7 +63,7 @@
                     <div class="row">
                         {% for picture in trick.pictures|slice(1) %}
                             <div class="col-md-6 media-container">
-                                <img src="{{ asset('build/pictures/tricks/' ~ picture) }}" class="img-fluid" alt="Picture" style="max-height: 200px; width:100%; object-fit: cover;">
+                                <img src="{{ asset('build/pictures/tricks/' ~ picture) }}" class="img-fluid" alt="Picture" style="height: 200px; width:300px; object-fit: cover;">
                             </div>
                         {% endfor %}
                     </div>
