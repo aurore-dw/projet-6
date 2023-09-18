@@ -9,8 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('content', null, [
             'label' => 'Mon commentaire :',
@@ -25,12 +27,16 @@ class CommentType extends AbstractType
             //->add('trick')
             //->add('user')
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+
         $resolver->setDefaults([
             'data_class' => Comment::class,
         ]);
+
     }
+    
 }

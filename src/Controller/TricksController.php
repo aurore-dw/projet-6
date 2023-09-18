@@ -21,9 +21,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 #[Route('/tricks')]
 class TricksController extends AbstractController
 {
-    /**
-    * Liste les 8 premiers tricks
-    */
+    
+    //Liste les 8 premiers tricks
     #[Route('/', name: 'app_tricks_index', methods: ['GET'])]
     public function index(TricksRepository $tricksRepository): Response
     {
@@ -40,9 +39,8 @@ class TricksController extends AbstractController
 
     }
 
-    /**
-    * Injecte une instance de l'entity manager
-    */
+    
+    //Injecte une instance de l'entity manager
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -52,9 +50,8 @@ class TricksController extends AbstractController
 
     }
 
-    /**
-    * Permet de charger les tricks via le bouton "charger plus"
-    */
+    
+    //Permet de charger les tricks via le bouton "charger plus"
     #[Route('/load-more-tricks', name:'load_more_tricks')]
     public function loadMoreTricks(Request $request, TricksRepository $tricksRepository): Response
     {
@@ -75,9 +72,8 @@ class TricksController extends AbstractController
 
     }
 
-    /**
-    * Enregistre un nouveau trick
-    */
+    
+    //Enregistre un nouveau trick
     #[Route('/new', name: 'app_tricks_new', methods: ['GET', 'POST'])]
     public function new(Request $request, TricksRepository $tricksRepository, SecurityController $lastUsername, SessionInterface $session): Response
     {
@@ -146,9 +142,8 @@ class TricksController extends AbstractController
         ]);
     }
 
-    /**
-    * Affiche la page avec le détail d'un trick
-    */
+    
+    //Affiche la page avec le détail d'un trick
     #[Route('/{id}', name: 'app_tricks_show', methods: ['GET', 'POST'])]
     public function show(Request $request, CommentRepository $commentRepository, SecurityController $lastUsername, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session): Response
     {
@@ -172,9 +167,8 @@ class TricksController extends AbstractController
 
     }
 
-    /**
-    * Permet de modifier un trick
-    */
+    
+    //Permet de modifier un trick
     #[Route('/{id}/edit', name: 'app_tricks_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session, SecurityController $lastUsername): Response
     {
@@ -267,9 +261,8 @@ class TricksController extends AbstractController
 
     }
 
-    /**
-    * Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
-    */
+    
+    //Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
     private function getImageNumberFromName(string $imageName): ?int
     {
 
@@ -281,9 +274,8 @@ class TricksController extends AbstractController
 
     }
 
-    /**
-    * Suppression d'un trick
-    */
+    
+    //Suppression d'un trick
     #[Route('/delete/{id}', name: 'app_tricks_delete', methods: ['POST'])]
         public function delete(Request $request, Tricks $trick, TricksRepository $tricksRepository, CommentRepository $commentRepository, SessionInterface $session, SecurityController $lastUsername): Response
         {

@@ -29,9 +29,8 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
 
     }
 
-    /**
-    * Enregistre le nouveau mot de passe
-    */
+    
+    //Enregistre le nouveau mot de passe
     public function save(ResetPasswordRequest $entity, bool $flush = false): void
     {
 
@@ -43,9 +42,8 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
 
     }
 
-    /**
-    * Supprime l'ancien mot de passe
-    */
+    
+    //Supprime l'ancien mot de passe
     public function remove(ResetPasswordRequest $entity, bool $flush = false): void
     {
 
@@ -57,9 +55,8 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
 
     }
 
-    /**
-    * Envoi une requête de changement de mot de passe
-    */
+    
+    //Envoi une requête de changement de mot de passe
     public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
     {
 
