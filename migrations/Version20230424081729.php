@@ -17,11 +17,13 @@ final class Version20230424081729 extends AbstractMigration
         return '';
     }
 
+
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE tricks CHANGE pictures pictures JSON DEFAULT NULL');
     }
+    
 
     public function down(Schema $schema): void
     {

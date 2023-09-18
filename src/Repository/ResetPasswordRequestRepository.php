@@ -19,33 +19,52 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  */
 class ResetPasswordRequestRepository extends ServiceEntityRepository implements ResetPasswordRequestRepositoryInterface
 {
+
     use ResetPasswordRequestRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
+
         parent::__construct($registry, ResetPasswordRequest::class);
+
     }
 
+    /**
+    * Enregistre le nouveau mot de passe
+    */
     public function save(ResetPasswordRequest $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
     }
 
+    /**
+    * Supprime l'ancien mot de passe
+    */
     public function remove(ResetPasswordRequest $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
     }
 
+    /**
+    * Envoi une requête de changement de mot de passe
+    */
     public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
     {
+
         return new ResetPasswordRequest($user, $expiresAt, $selector, $hashedToken);
+
     }
+
 }

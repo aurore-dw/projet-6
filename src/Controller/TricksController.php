@@ -21,9 +21,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 #[Route('/tricks')]
 class TricksController extends AbstractController
 {
+    /**
+    * Liste les 8 premiers tricks
+    */
     #[Route('/', name: 'app_tricks_index', methods: ['GET'])]
     public function index(TricksRepository $tricksRepository): Response
     {
+
         //Affiche les 8 premiers tricks
         $tricks = $tricksRepository->findBy([], ['create_at' => 'DESC'], 8);
         //On compte tous les tricks disponnibles
@@ -33,18 +37,28 @@ class TricksController extends AbstractController
             'tricks' => $tricks,
             'totalTricks' => $totalTricks,
         ]);
+
     }
 
+    /**
+    * Injecte une instance de l'entity manager
+    */
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
+
         $this->entityManager = $entityManager;
+
     }
 
+    /**
+    * Permet de charger les tricks via le bouton "charger plus"
+    */
     #[Route('/load-more-tricks', name:'load_more_tricks')]
     public function loadMoreTricks(Request $request, TricksRepository $tricksRepository): Response
     {
+
         $offset = $request->query->getInt('offset', 0);
         $limit = 8;
 
@@ -58,8 +72,12 @@ class TricksController extends AbstractController
         return $this->render('tricks/_tricks.html.twig', [
             'tricks' => $tricks,
         ]);
+
     }
 
+    /**
+    * Enregistre un nouveau trick
+    */
     #[Route('/new', name: 'app_tricks_new', methods: ['GET', 'POST'])]
     public function new(Request $request, TricksRepository $tricksRepository, SecurityController $lastUsername, SessionInterface $session): Response
     {
@@ -74,7 +92,8 @@ class TricksController extends AbstractController
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+
             // Récupére les liens vidéo
             $videos = $form->get('videos')->getData();
             $videoLinks = explode(',', $videos); // Sépare les liens vidéo par une virgule
@@ -127,14 +146,18 @@ class TricksController extends AbstractController
         ]);
     }
 
+    /**
+    * Affiche la page avec le détail d'un trick
+    */
     #[Route('/{id}', name: 'app_tricks_show', methods: ['GET', 'POST'])]
     public function show(Request $request, CommentRepository $commentRepository, SecurityController $lastUsername, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session): Response
     {
+
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
             $comment->setCreateAt(new \DateTime(date('Y-m-d H:i:s')));
             $comment->setUser($lastUsername->getUser());
             $trick = $tricksRepository->find($id);
@@ -146,11 +169,16 @@ class TricksController extends AbstractController
             'trick' => $trick,
             'form' => $form->createView(),
         ]);
+
     }
 
+    /**
+    * Permet de modifier un trick
+    */
     #[Route('/{id}/edit', name: 'app_tricks_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session, SecurityController $lastUsername): Response
     {
+
         //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
         $user = $lastUsername->getUser();
         if (!$user || !$user->isVerified()) {
@@ -173,7 +201,7 @@ class TricksController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
 
             // Supprime les images sélectionnées
             $selectedPictures = $request->request->get('selected_pictures');
@@ -197,7 +225,7 @@ class TricksController extends AbstractController
             }
 
                 // Mise à jour des vidéos
-            $newVideoLinks = $form->get('videos')->getData();
+                $newVideoLinks = $form->get('videos')->getData();
                 $videoLinks = explode(',', $newVideoLinks); // Séparer les liens vidéo par une virgule
                 $trick->setVideos($videoLinks);
                 // Met à jour l'entité Tricks avec les images restantes
@@ -219,38 +247,48 @@ class TricksController extends AbstractController
                 }
                 
 
-            // Met à jour la date de mise à jour
+                // Met à jour la date de mise à jour
                 $trick->setUpdateAt(new \DateTime());
 
-            // Enregistre les modifications dans la base de données
+                // Enregistre les modifications dans la base de données
                 $tricksRepository->save($trick, true);
 
-            // Ajoute un message de succès dans la session
+                // Ajoute un message de succès dans la session
                 $session->getFlashBag()->add('successEdit', 'Le trick a été modifié avec succès !');
 
-            //return $this->redirectToRoute('app_tricks_index', [], Response::HTTP_SEE_OTHER);
                 return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+
             }
 
             return $this->renderForm('tricks/edit.html.twig', [
                 'trick' => $trick,
                 'form' => $form,
             ]);
-        }
-    //Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
-        private function getImageNumberFromName(string $imageName): ?int
-        {
-            $imageName = pathinfo($imageName, PATHINFO_FILENAME);
-            if (preg_match('/_\d+$/', $imageName, $matches)) {
-                return (int)trim($matches[0], '_');
-            }
-            return null;
-        }
 
+    }
+
+    /**
+    * Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
+    */
+    private function getImageNumberFromName(string $imageName): ?int
+    {
+
+        $imageName = pathinfo($imageName, PATHINFO_FILENAME);
+        if (preg_match('/_\d+$/', $imageName, $matches)) {
+            return (int)trim($matches[0], '_');
+        }
+        return null;
+
+    }
+
+    /**
+    * Suppression d'un trick
+    */
     #[Route('/delete/{id}', name: 'app_tricks_delete', methods: ['POST'])]
         public function delete(Request $request, Tricks $trick, TricksRepository $tricksRepository, CommentRepository $commentRepository, SessionInterface $session, SecurityController $lastUsername): Response
         {
-        //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
+
+            //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
             $user = $lastUsername->getUser();
             if (!$user || !$user->isVerified()) {
                 $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
@@ -258,14 +296,15 @@ class TricksController extends AbstractController
             }
 
             if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
-            //Supprime les commentaires liés au trick
+                //Supprime les commentaires liés au trick
                 $commentRepository->deleteCommentsByTrick($trick);
-            //Supprime le trick
+                //Supprime le trick
                 $tricksRepository->remove($trick, true);
-            // Ajoute un message de succès dans la session
+                // Ajoute un message de succès dans la session
                 $session->getFlashBag()->add('danger', 'Le trick a été supprimé avec succès !');
             }
 
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
-    }
+
+}

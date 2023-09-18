@@ -10,9 +10,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HomeController extends AbstractController
 {
+
+    /**
+    * Fonction qui affiche les 8 premiers tricks de la page d'accueil + affiche les messages de succès
+    */
     #[Route('/', name: 'app_home')]
     public function index(TricksRepository $tricksRepository, SessionInterface $session): Response
     {
+
         //Affiche les 8 premiers tricks
         $tricks = $tricksRepository->findBy([], ['create_at' => 'DESC'], 8);
         //On compte tous les tricks disponnibles
@@ -33,4 +38,5 @@ class HomeController extends AbstractController
             'successMessageDelete' => $successMessageDelete,
         ]);
     }
+    
 }

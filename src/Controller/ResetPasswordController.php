@@ -23,6 +23,7 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 #[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
 {
+
     use ResetPasswordControllerTrait;
 
     public function __construct(
@@ -32,11 +33,12 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Afficher et traiter le formulaire de demande de réinitialisation du mot de passe.
+     * Affiche et traite le formulaire de demande de réinitialisation du mot de passe.
     */
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
+
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
 
@@ -51,6 +53,7 @@ class ResetPasswordController extends AbstractController
         return $this->render('reset_password/request.html.twig', [
             'requestForm' => $form->createView(),
         ]);
+
     }
 
     /**
@@ -59,6 +62,7 @@ class ResetPasswordController extends AbstractController
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
+
         // Génére un jeton fictif si l'utilisateur n'existe pas ou si quelqu'un accède directement à cette page.
         // Cela évite de révéler si un utilisateur a été trouvé ou non avec l'adresse e-mail fournie
         if (null === ($resetToken = $this->getTokenObjectFromSession())) {
@@ -68,6 +72,7 @@ class ResetPasswordController extends AbstractController
         return $this->render('reset_password/check_email.html.twig', [
             'resetToken' => $resetToken,
         ]);
+
     }
 
     /**
@@ -76,6 +81,7 @@ class ResetPasswordController extends AbstractController
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, string $token = null): Response
     {
+
         if ($token) {
             // On stock le jeton en session et le supprime de l'URL pour éviter que l'URL soit chargée dans un navigateur et potentiellement divulgue le jeton à des scripts JavaScript tiers.
             $this->storeTokenInSession($token);
@@ -126,10 +132,12 @@ class ResetPasswordController extends AbstractController
         return $this->render('reset_password/reset.html.twig', [
             'resetForm' => $form->createView(),
         ]);
+
     }
 
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer, TranslatorInterface $translator): RedirectResponse
     {
+
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
             'email' => $emailFormData,
         ]);
@@ -162,9 +170,8 @@ class ResetPasswordController extends AbstractController
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
-            ])
-        ;
-
+            ]);
+        
         $mailer->send($email);
 
         //Stocke l'objet du jeton en session pour le récupérer dans la route check-email.
@@ -172,4 +179,5 @@ class ResetPasswordController extends AbstractController
 
         return $this->redirectToRoute('app_check_email');
     }
+    
 }
