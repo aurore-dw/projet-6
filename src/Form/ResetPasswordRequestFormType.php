@@ -10,8 +10,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ResetPasswordRequestFormType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('email', EmailType::class, [
                 'attr' => ['autocomplete' => 'email', 'class' => 'form-control'],
@@ -22,10 +24,14 @@ class ResetPasswordRequestFormType extends AbstractType
                 ],
             ])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+
         $resolver->setDefaults([]);
+
     }
+    
 }

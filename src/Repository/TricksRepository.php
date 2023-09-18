@@ -24,9 +24,8 @@ class TricksRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Enregistre une figure
-    */
+    
+    //Enregistre une figure
     public function save(Tricks $entity, bool $flush = false): void
     {
 
@@ -39,9 +38,8 @@ class TricksRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Supprime une figure
-    */
+    
+    //Supprime une figure
     public function remove(Tricks $entity, bool $flush = false): void
     {
 
@@ -53,9 +51,8 @@ class TricksRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Retourne une liste des figures 
-    */
+    
+    //Retourne une liste des figures 
     public function findPaginatedTricks($offset, $limit)
     {
 
@@ -69,9 +66,8 @@ class TricksRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Permet de compter le nombre de figures
-    */
+    
+    //Permet de compter le nombre de figures
     public function countAllTricks(): int
     {
 

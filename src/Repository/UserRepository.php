@@ -27,6 +27,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     }
 
+    //Enregistre un utilisateur
     public function save(User $entity, bool $flush = false): void
     {
 
@@ -38,6 +39,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     }
 
+    //Supprime un utilisateur
     public function remove(User $entity, bool $flush = false): void
     {
 
@@ -49,9 +51,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
+    
+    //Used to upgrade (rehash) the user's password automatically over time.
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
 
@@ -62,7 +63,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
 
         $this->save($user, true);
-        
+
     }
 
 //    /**

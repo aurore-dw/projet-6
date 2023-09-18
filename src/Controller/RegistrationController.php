@@ -34,9 +34,8 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
 
-        /**
-        * Enregistrement d'un nouvel utilisateur
-        */
+        
+        //Enregistrement d'un nouvel utilisateur
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -76,9 +75,8 @@ class RegistrationController extends AbstractController
 
     }
 
-    /**
-    * Permet d'envoyer un mail de confirmation à l'utilisateur pour qu'il puisse valider son compte
-    */
+    
+    //Permet d'envoyer un mail de confirmation à l'utilisateur pour qu'il puisse valider son compte
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {

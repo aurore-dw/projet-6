@@ -19,8 +19,10 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class TricksType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
         ->add('name')
         ->add('description', TextareaType::class, [
@@ -64,15 +66,19 @@ class TricksType extends AbstractType
                         'help' => 'Séparez les liens vidéo par des virgules (,). Exemple : lien1, lien2, lien3',
                     ]);
                 }
-        }); 
+        });
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+
         $resolver->setDefaults([
             'data_class' => Tricks::class,
             'existing_pictures' => [],
             'existing_videos' => [],
         ]);
+
     }
+    
 }

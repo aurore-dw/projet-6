@@ -16,9 +16,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    /**
-    * Affiche la liste des utilisateurs
-    */
+    
+    //Affiche la liste des utilisateurs
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -29,9 +28,8 @@ class UserController extends AbstractController
 
     }
 
-    /**
-    * Créer un nouvel utilisateur
-    */
+    
+    //Créer un nouvel utilisateur
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, UserRepository $userRepository): Response
     {
@@ -53,9 +51,8 @@ class UserController extends AbstractController
 
     }
 
-    /**
-    * Montre le profil de l'utilisateur
-    */
+    
+    //Montre le profil de l'utilisateur
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user, Security $security, UserRepository $userRepository, SessionInterface $session): Response
     {
@@ -85,9 +82,8 @@ class UserController extends AbstractController
 
     }
 
-    /**
-    * Modifie le profil de l'utilisateur
-    */
+    
+    //Modifie le profil de l'utilisateur
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -122,9 +118,8 @@ class UserController extends AbstractController
 
     }
 
-    /**
-    * Supprime le compte utilisateur
-    */
+    
+    //Supprime le compte utilisateur
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -148,5 +143,5 @@ class UserController extends AbstractController
         return uniqid('', true);
 
     }
-    
+
 }

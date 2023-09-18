@@ -25,9 +25,8 @@ class CommentRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Permet de récupérer la liste des commentaires par tricks
-    */
+    
+    //Permet de récupérer la liste des commentaires par tricks
     public function findPaginatedCommentsByTrick($trickId, $offset, $limit)
     {
 
@@ -43,9 +42,8 @@ class CommentRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Enregistre un commentaire
-    */
+    
+    //Enregistre un commentaire
     public function save(Comment $entity, bool $flush = false): void
     {
 
@@ -57,9 +55,7 @@ class CommentRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Supprime un commentaire
-    */
+    //Supprime un commentaire
     public function remove(Comment $entity, bool $flush = false): void
     {
 
@@ -71,9 +67,7 @@ class CommentRepository extends ServiceEntityRepository
 
     }
 
-    /**
-    * Supprime les commentaires liés à un tricks lors de la suppression de ce dernier
-    */
+    //Supprime les commentaires liés à un tricks lors de la suppression de ce dernier
     public function deleteCommentsByTrick(Tricks $trick): void
     {
 
