@@ -22,14 +22,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class TricksController extends AbstractController
 {
     
-    //Liste les 8 premiers tricks
+    // Liste les 8 premiers tricks
     #[Route('/', name: 'app_tricks_index', methods: ['GET'])]
     public function index(TricksRepository $tricksRepository): Response
     {
 
-        //Affiche les 8 premiers tricks
+        // Affiche les 8 premiers tricks
         $tricks = $tricksRepository->findBy([], ['create_at' => 'DESC'], 8);
-        //On compte tous les tricks disponnibles
+        // On compte tous les tricks disponnibles
         $totalTricks = $tricksRepository->countAllTricks();
 
         return $this->render('tricks/index.html.twig', [
@@ -40,7 +40,7 @@ class TricksController extends AbstractController
     }
 
     
-    //Injecte une instance de l'entity manager
+    // Injecte une instance de l'entity manager
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -51,7 +51,7 @@ class TricksController extends AbstractController
     }
 
     
-    //Permet de charger les tricks via le bouton "charger plus"
+    // Permet de charger les tricks via le bouton "charger plus"
     #[Route('/load-more-tricks', name:'load_more_tricks')]
     public function loadMoreTricks(Request $request, TricksRepository $tricksRepository): Response
     {
@@ -73,11 +73,11 @@ class TricksController extends AbstractController
     }
 
     
-    //Enregistre un nouveau trick
+    // Enregistre un nouveau trick
     #[Route('/new', name: 'app_tricks_new', methods: ['GET', 'POST'])]
     public function new(Request $request, TricksRepository $tricksRepository, SecurityController $lastUsername, SessionInterface $session): Response
     {
-        //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
+        // On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
         $user = $lastUsername->getUser();
         if (!$user || !$user->isVerified()) {
             $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
@@ -132,7 +132,6 @@ class TricksController extends AbstractController
             // Ajoute un message de succès dans la session
             $session->getFlashBag()->add('success', 'Le trick a été enregistré avec succès !');
 
-            //return $this->redirectToRoute('app_tricks_index');
             return $this->redirectToRoute('app_home');
         }
 
@@ -143,7 +142,7 @@ class TricksController extends AbstractController
     }
 
     
-    //Affiche la page avec le détail d'un trick
+    // Affiche la page avec le détail d'un trick
     #[Route('/{id}', name: 'app_tricks_show', methods: ['GET', 'POST'])]
     public function show(Request $request, CommentRepository $commentRepository, SecurityController $lastUsername, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session): Response
     {
@@ -168,7 +167,7 @@ class TricksController extends AbstractController
     }
 
     
-    //Permet de modifier un trick
+    // Permet de modifier un trick
     #[Route('/{id}/edit', name: 'app_tricks_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session, SecurityController $lastUsername): Response
     {
@@ -262,7 +261,7 @@ class TricksController extends AbstractController
     }
 
     
-    //Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
+    // Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
     private function getImageNumberFromName(string $imageName): ?int
     {
 
@@ -275,12 +274,12 @@ class TricksController extends AbstractController
     }
 
     
-    //Suppression d'un trick
+    // Suppression d'un trick
     #[Route('/delete/{id}', name: 'app_tricks_delete', methods: ['POST'])]
         public function delete(Request $request, Tricks $trick, TricksRepository $tricksRepository, CommentRepository $commentRepository, SessionInterface $session, SecurityController $lastUsername): Response
         {
 
-            //On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
+            // On vérifie si l'utilisateur est bien connecté et si son compte est vérifié
             $user = $lastUsername->getUser();
             if (!$user || !$user->isVerified()) {
                 $session->getFlashBag()->add('error', 'Vous devez être connecté et avoir un compte vérifié pour effectuer cette action.');
@@ -288,9 +287,9 @@ class TricksController extends AbstractController
             }
 
             if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
-                //Supprime les commentaires liés au trick
+                // Supprime les commentaires liés au trick
                 $commentRepository->deleteCommentsByTrick($trick);
-                //Supprime le trick
+                // Supprime le trick
                 $tricksRepository->remove($trick, true);
                 // Ajoute un message de succès dans la session
                 $session->getFlashBag()->add('danger', 'Le trick a été supprimé avec succès !');

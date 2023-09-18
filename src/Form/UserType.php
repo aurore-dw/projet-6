@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 class UserType extends AbstractType
 {
 
+    // Formulaire de création d'utilisateur
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -24,13 +25,14 @@ class UserType extends AbstractType
 
     }
 
+    // Configuration des options
     public function configureOptions(OptionsResolver $resolver): void
     {
 
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
-        
+
     }
 
 }

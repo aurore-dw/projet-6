@@ -12,7 +12,7 @@ class HomeController extends AbstractController
 {
 
     
-    //Fonction qui affiche les 8 premiers tricks de la page d'accueil + affiche les messages de succès
+    // Fonction qui affiche les 8 premiers tricks de la page d'accueil + affiche les messages de succès
     #[Route('/', name: 'app_home')]
     public function index(TricksRepository $tricksRepository, SessionInterface $session): Response
     {

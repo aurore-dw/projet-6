@@ -23,7 +23,7 @@ class CommentController extends AbstractController
 {
 
     
-    //Liste des commentaires
+    // Liste des commentaires
     #[Route('/', name: 'app_comment_index', methods: ['GET'])]
     public function index(CommentRepository $commentRepository, Tricks $trick, TricksRepository $tricksRepository, $id): Response
     {
@@ -35,7 +35,7 @@ class CommentController extends AbstractController
     }
 
     
-    //Création d'un commentaire
+    // Création d'un commentaire
     #[Route('/new/{id}', name: 'app_comment_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CommentRepository $commentRepository, SecurityController $lastUsername, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session): Response
     {
@@ -65,7 +65,7 @@ class CommentController extends AbstractController
     }
 
     
-    //Montre un commentaire
+    // Montre un commentaire
     #[Route('/{id}', name: 'app_comment_show', methods: ['GET'])]
     public function show(Comment $comment): Response
     {
@@ -77,7 +77,7 @@ class CommentController extends AbstractController
     }
 
     
-    //Modifie un commentaire
+    // Modifie un commentaire
     #[Route('/{id}/edit', name: 'app_comment_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Comment $comment, CommentRepository $commentRepository): Response
     {
@@ -99,7 +99,7 @@ class CommentController extends AbstractController
     }
 
     
-    //Supprime un commentaire
+    // Supprime un commentaire
     #[Route('/{id}', name: 'app_comment_delete', methods: ['POST'])]
     public function delete(Request $request, Comment $comment, CommentRepository $commentRepository): Response
     {
@@ -113,7 +113,7 @@ class CommentController extends AbstractController
     }
 
     
-    //Fonction servant à réccupérer les commentaires en format json pour l'ajax géré par le bouton "charger plus de commentaires"
+    // Fonction servant à réccupérer les commentaires en format json pour l'ajax géré par le bouton "charger plus de commentaires"
     #[Route('/load/{id}', name: 'app_load_comments', methods: ['GET'])]
     public function loadCommentsAction(Request $request, PaginatorInterface $paginator, Tricks $trick, TricksRepository $tricksRepository, $id, CommentRepository $commentRepository): JsonResponse
     {

@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CommentType extends AbstractType
 {
 
+    // Formulaire pour déposer un commentaire
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -30,6 +31,7 @@ class CommentType extends AbstractType
 
     }
 
+    // Configure les options
     public function configureOptions(OptionsResolver $resolver): void
     {
 
@@ -38,5 +40,5 @@ class CommentType extends AbstractType
         ]);
 
     }
-    
+
 }
