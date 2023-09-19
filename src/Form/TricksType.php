@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\Length;
 class TricksType extends AbstractType
 {
 
-    //Formulaire de création / édition d'une figure
+    //Formulaire de création / édition d'une figure.
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -49,7 +49,7 @@ class TricksType extends AbstractType
         ->add('videos', TextType::class, [
             'label' => 'Videos',
             'required' => false,
-            'help' => 'Séparez les liens vidéo par des virgules (,). Exemple : lien1, lien2, lien3',
+            'help' => 'Séparez les liens vidéo par des virgules (,) sans espaces. Exemple : lien1,lien2,lien3',
         ])
         ->add('category');
 
@@ -64,7 +64,7 @@ class TricksType extends AbstractType
                         'label' => 'Videos',
                         'required' => false,
                         'data' => $videos,
-                        'help' => 'Séparez les liens vidéo par des virgules (,). Exemple : lien1, lien2, lien3',
+                        'help' => 'Séparez les liens vidéo par des virgules (,) sans espaces. Exemple : lien1,lien2,lien3',
                     ]);
                 }
         });

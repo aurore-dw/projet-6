@@ -6,17 +6,27 @@
                 {{ form_label(form.name, 'Nom*') }}
                 {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.name) }}
+                <span id="trick-name-error" class="error-message"></span>
             </div>
             <br>
             <div class="form-group">
                 {{ form_label(form.description, 'Description*') }}
-                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'maxlength': 1000, 'style': 'height: 200px;'}}) }}
+                <span id="description-error" class="error-message"></span>
                 <span class="error-message">{{ form_errors(form.description) }}</span>
             </div>
             <br>
             <div class="form-group">
                 {{ form_label(form.pictures, 'Images') }}
                 {{ form_widget(form.pictures, {'attr': {'class': 'form-control-file', 'multiple': true}}) }}
+                <span id="pictures-error" class="error-message"></span>
+            </div>
+            <div id="selected-images">
+            {% if form.pictures.vars.value is not empty %}
+                {% for picture in form.pictures.vars.value %}
+                    <img src="{{ asset('build/pictures/tricks/' ~ picture) }}" alt="Picture" class="selected-picture" style="height: 200px; width:300px;">
+                {% endfor %}
+            {% endif %}
             </div>
             <br>
             {% if trick.pictures is defined and trick.pictures is not empty %}
@@ -32,6 +42,7 @@
             <div class="form-group">
                 {{ form_label(form.videos, 'Vidéos') }}
                 {{ form_widget(form.videos, {'attr': {'class': 'form-control'}}) }}
+                <span id="videos-error" class="error-message"></span>
                 <span class="help-message">{{ form_help(form.videos) }}</span>
             </div>
             <br>
@@ -41,7 +52,7 @@
             </div>
             <br>
             {{ form_widget(form._token) }}
-            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button><br>
+            <button class="btn btn-primary" id="submit-button">{{ button_label|default('Enregistrer') }}</button><br>
             <span class="help-message">* Champs obligatoires pour la validation</span>
         </div>
     </div>

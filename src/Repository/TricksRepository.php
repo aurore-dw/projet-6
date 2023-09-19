@@ -24,7 +24,18 @@ class TricksRepository extends ServiceEntityRepository
 
     }
 
-    
+    // Recherche un trick par son nom
+    public function findOneByName(string $name): ?Tricks
+    {
+
+        return $this->createQueryBuilder('t')
+            ->where('t.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
+
     //Enregistre une figure
     public function save(Tricks $entity, bool $flush = false): void
     {
