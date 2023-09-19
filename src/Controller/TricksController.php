@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/tricks')]
 class TricksController extends AbstractController
@@ -38,7 +39,6 @@ class TricksController extends AbstractController
         ]);
 
     }
-
     
     // Injecte une instance de l'entity manager
     private $entityManager;
@@ -49,7 +49,6 @@ class TricksController extends AbstractController
         $this->entityManager = $entityManager;
 
     }
-
     
     // Permet de charger les tricks via le bouton "charger plus"
     #[Route('/load-more-tricks', name:'load_more_tricks')]
@@ -72,6 +71,20 @@ class TricksController extends AbstractController
 
     }
 
+    // On vérifie si le nom du trick existe déjà 
+    #[Route('/check-trick-name', name:'check_trick_name', methods:['GET'])]
+    public function checkTrickName(Request $request, TricksRepository $tricksRepository)
+    {
+        $trickName = $request->query->get('name'); // Récupérez le nom du trick depuis la requête AJAX
+
+        // Vérifiez si le nom du trick existe déjà en utilisant la méthode findOneByName
+        $existingTrick = $tricksRepository->findOneByName($trickName);
+
+        // Créez une réponse JSON avec le résultat de la vérification
+        $response = new JsonResponse(['valid' => !$existingTrick]);
+
+        return $response;
+    }
     
     // Enregistre un nouveau trick
     #[Route('/new', name: 'app_tricks_new', methods: ['GET', 'POST'])]
@@ -140,8 +153,7 @@ class TricksController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-    
+   
     // Affiche la page avec le détail d'un trick
     #[Route('/{id}', name: 'app_tricks_show', methods: ['GET', 'POST'])]
     public function show(Request $request, CommentRepository $commentRepository, SecurityController $lastUsername, Tricks $trick, TricksRepository $tricksRepository, $id, SessionInterface $session): Response
@@ -165,7 +177,6 @@ class TricksController extends AbstractController
         ]);
 
     }
-
     
     // Permet de modifier un trick
     #[Route('/{id}/edit', name: 'app_tricks_edit', methods: ['GET', 'POST'])]
@@ -224,7 +235,7 @@ class TricksController extends AbstractController
                 // Met à jour l'entité Tricks avec les images restantes
                 $trick->setPictures(array_values($existingPictures));
 
-                // Gérer les nouvelles images
+                // Gére les nouvelles images
                 $uploadedPictures = $form->get('pictures')->getData();
                 $nextImageNumber = $deletedImageNumber ?? count($existingPictures) + 1;
                 foreach ($uploadedPictures as $uploadedPicture) {
@@ -259,8 +270,7 @@ class TricksController extends AbstractController
             ]);
 
     }
-
-    
+   
     // Permet de reprendre le numéro de l'image supprimée pour la nouvelle image
     private function getImageNumberFromName(string $imageName): ?int
     {
@@ -272,7 +282,6 @@ class TricksController extends AbstractController
         return null;
 
     }
-
     
     // Suppression d'un trick
     #[Route('/delete/{id}', name: 'app_tricks_delete', methods: ['POST'])]

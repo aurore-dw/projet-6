@@ -9,3 +9,121 @@
 
 {% endblock %}
 
+{% block javascripts %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+    //On recherche s'il existe un trick ayant déjà ce nom.
+    $(document).ready(function() {
+        const trickNameInput = $('#tricks_name');
+        const trickNameError = $('#trick-name-error');
+
+        trickNameInput.on('input', function() {
+            const trickName = trickNameInput.val().trim();
+            if (trickName === '') {
+                trickNameError.text('');
+                return;
+            }
+
+        // Envoi une requête AJAX GET pour vérifier le nom du trick
+            $.get(`/check-trick-name?name=${encodeURIComponent(trickName)}`, function(data) {
+                if (data.valid) {
+                trickNameError.text(''); // Nom valide, efface le message d'erreur
+            } else {
+                trickNameError.text('Ce nom de trick est déjà pris.'); // Nom déjà existant, affiche une erreur
+            }
+        }, 'json');
+        });
+    });
+
+    //On compte le nombre de caractères pour signaler à l'utilisateur s'il dépasse le nombre autorisé.
+    $(document).ready(function() {
+        const descriptionInput = $('#tricks_description');
+        const descriptionError = $('#description-error');
+
+        descriptionInput.on('input', function() {
+            const maxLength = 1000; // Le nombre maximal de caractères
+            const description = descriptionInput.val();
+        
+            if (description.length > maxLength) {
+                descriptionError.text(`La description ne peut pas dépasser ${maxLength} caractères.`);
+                descriptionInput.addClass('is-invalid'); // Ajoute une classe CSS pour indiquer une erreur
+            } else {
+                descriptionError.text(''); // Efface le message d'erreur
+                descriptionInput.removeClass('is-invalid'); // Supprime la classe CSS d'erreur
+            }
+        });
+    });
+
+    //On vérifie si l'utilisateur respecte le format de vidéos demandé en cas d'ajout multiple.
+    $(document).ready(function() {
+        const videosInput = $('#tricks_videos'); 
+        const videosError = $('#videos-error');
+
+        videosInput.on('input', function() {
+            const videos = videosInput.val().trim();
+
+            // Vérifie s'il y a un espace entre deux caractères
+            const hasSpaceBetweenLinks = /\S\s+\S/.test(videos);
+
+            if (hasSpaceBetweenLinks) {
+                videosError.text('Les liens doivent être séparés par des virgules.');
+                videosInput.addClass('is-invalid'); // Ajoute une classe CSS pour indiquer une erreur
+            } else {
+                videosError.text(''); // Efface le message d'erreur
+                videosInput.removeClass('is-invalid'); // Supprime la classe CSS d'erreur
+            }
+        });
+    });
+
+    //On vérifie si les images ont le bon format
+    $(document).ready(function() {
+        const picturesInput = $('#tricks_pictures'); 
+        const picturesError = $('#pictures-error');
+
+        picturesInput.on('change', function() {
+            picturesError.text(''); // Efface le message d'erreur précédent
+
+            const allowedExtensions = ['png', 'jpg', 'jpeg', 'svg', 'pdf', 'ico', 'mp4', 'webp', 'webm'];
+
+            // Vérifie chaque fichier sélectionné
+            for (let i = 0; i < picturesInput[0].files.length; i++) {
+                const file = picturesInput[0].files[i];
+                const extension = file.name.split('.').pop().toLowerCase();
+
+                // Vérifie si l'extension est dans la liste des extensions autorisées
+                if (allowedExtensions.indexOf(extension) === -1) {
+                    picturesError.text('Le format de fichier ' + file.name + ' n\'est pas valide.');
+                    picturesInput.val(''); // Réinitialisez le champ pour supprimer les fichiers non valides
+                    return;
+                }
+            }
+        });
+    });
+
+    //Permet de préafficher les images séléctionnées 
+    $(document).ready(function() {
+        const picturesInput = $('#tricks_pictures');
+        const selectedImages = $('#selected-images');
+
+        picturesInput.on('change', function() {
+            selectedImages.empty(); // Supprime les images existantes
+
+            // Afficher les images sélectionnées
+            const files = picturesInput[0].files;
+            for (let i = 0; i < files.length; i++) {
+                const image = document.createElement('img');
+                image.src = URL.createObjectURL(files[i]);
+                image.alt = 'Selected Picture';
+                image.className = 'selected-picture';
+                image.style.height = '200px'; 
+                image.style.width = '300px'; 
+                selectedImages.append(image);
+            }
+        });
+    });
+
+</script>
+
+{% endblock %}
