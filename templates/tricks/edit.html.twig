@@ -3,10 +3,10 @@
 {% block title %}Edit Tricks{% endblock %}
 
 {% block body %}
-    <br>
+    <br><br>
     <h1 style="text-align:center;">Modifier une figure</h1>
 
-    {{ include('tricks/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    {{ include('tricks/_formedit.html.twig', {'button_label': 'Mettre à jour'}) }}
 
     <a href="{{ path('app_tricks_index') }}" class="btn btn-primary" style="margin-bottom:10px">Retour</a>
 {% endblock %}
