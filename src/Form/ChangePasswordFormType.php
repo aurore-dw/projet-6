@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class ChangePasswordFormType extends AbstractType
 {
 
-    //Formulaire de changement de mot de passe
+    //Formulaire de changement de mot de passe.
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -51,6 +51,7 @@ class ChangePasswordFormType extends AbstractType
 
     }
 
+    //Configuration des options
     public function configureOptions(OptionsResolver $resolver): void
     {
 

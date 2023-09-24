@@ -33,7 +33,7 @@ class ResetPasswordController extends AbstractController
     }
 
     
-    //Affiche et traite le formulaire de demande de réinitialisation du mot de passe.
+    // Affiche et traite le formulaire de demande de réinitialisation du mot de passe.
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
@@ -56,7 +56,7 @@ class ResetPasswordController extends AbstractController
     }
 
     
-    //Page de confirmation après que l'utilisateur ait demandé la réinitialisation du mot de passe.
+    // Page de confirmation après que l'utilisateur ait demandé la réinitialisation du mot de passe.
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
@@ -74,7 +74,7 @@ class ResetPasswordController extends AbstractController
     }
 
     
-    //Valide et traite l'URL de réinitialisation que l'utilisateur a cliquée dans son e-mail.
+    // Valide et traite l'URL de réinitialisation que l'utilisateur a cliquée dans son e-mail.
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, string $token = null): Response
     {
