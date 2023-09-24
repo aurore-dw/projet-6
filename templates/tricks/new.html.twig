@@ -3,6 +3,7 @@
 {% block title %}Nouvelle figure{% endblock %}
 
 {% block body %}
+    
     <h1 style="text-align:center; margin-top:80px;">Création d'une figure</h1>
 
     {{ include('tricks/_form.html.twig') }}
@@ -26,7 +27,7 @@
                 return;
             }
 
-        // Envoi une requête AJAX GET pour vérifier le nom du trick
+            // Envoi une requête AJAX GET pour vérifier le nom du trick
             $.get(`/check-trick-name?name=${encodeURIComponent(trickName)}`, function(data) {
                 if (data.valid) {
                 trickNameError.text(''); // Nom valide, efface le message d'erreur
@@ -95,7 +96,7 @@
                 // Vérifie si l'extension est dans la liste des extensions autorisées
                 if (allowedExtensions.indexOf(extension) === -1) {
                     picturesError.text('Le format de fichier ' + file.name + ' n\'est pas valide.');
-                    picturesInput.val(''); // Réinitialisez le champ pour supprimer les fichiers non valides
+                    picturesInput.val(''); // Réinitialise le champ pour supprimer les fichiers non valides
                     return;
                 }
             }

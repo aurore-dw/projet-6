@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CommentType extends AbstractType
 {
 
-    // Formulaire pour déposer un commentaire
+    // Formulaire pour déposer un commentaire.
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -23,11 +23,7 @@ class CommentType extends AbstractType
             'label_attr' => [
                 'class' => 'form-label'
             ]
-        ])
-            //->add('create_at')
-            //->add('trick')
-            //->add('user')
-        ;
+        ]);
 
     }
 
