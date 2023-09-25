@@ -57,27 +57,6 @@
         });
     });
 
-    //On vérifie si l'utilisateur respecte le format de vidéos demandé en cas d'ajout multiple.
-    $(document).ready(function() {
-        const videosInput = $('#tricks_videos'); 
-        const videosError = $('#videos-error');
-
-        videosInput.on('input', function() {
-            const videos = videosInput.val().trim();
-
-            // Vérifie s'il y a un espace entre deux caractères
-            const hasSpaceBetweenLinks = /\S\s+\S/.test(videos);
-
-            if (hasSpaceBetweenLinks) {
-                videosError.text('Les liens doivent être séparés par des virgules.');
-                videosInput.addClass('is-invalid'); // Ajoute une classe CSS pour indiquer une erreur
-            } else {
-                videosError.text(''); // Efface le message d'erreur
-                videosInput.removeClass('is-invalid'); // Supprime la classe CSS d'erreur
-            }
-        });
-    });
-
     //On vérifie si les images ont le bon format
     $(document).ready(function() {
         const picturesInput = $('#tricks_pictures'); 
