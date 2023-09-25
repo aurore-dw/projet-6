@@ -205,6 +205,13 @@ class TricksController extends AbstractController
 
         $form->handleRequest($request);
 
+        // Si le formulaire n'est pas valide, on réccupère les images
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $submittedPictures = $form->get('pictures')->getData();
+            $trick->setPictures(array_merge($existingPictures, $submittedPictures));
+        }
+
+        // Le formulaire est valide, on traite les données
         if ($form->isSubmitted() === true && $form->isValid() === true) {
 
             // Supprime les images sélectionnées
@@ -267,6 +274,7 @@ class TricksController extends AbstractController
             return $this->renderForm('tricks/edit.html.twig', [
                 'trick' => $trick,
                 'form' => $form,
+                'existing_pictures' => $existingPictures,
             ]);
 
     }

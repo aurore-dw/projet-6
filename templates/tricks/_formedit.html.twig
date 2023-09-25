@@ -8,8 +8,6 @@
             <h4>Image Principale :</h4>
             <div class="row">
                 <div class="col-md-12">
-                    <!--<i class="fas fa-pencil-alt"></i> 
-                    <input type="file" class="form-control-file" id="image_main" name="main_image" accept="image/*">-->
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="remove_main_image" name="remove_pictures[]" value="{{ trick.pictures|first }}">
                         <label class="form-check-label" for="remove_main_image"><i class="fas fa-trash"></i></label> 
@@ -31,8 +29,6 @@
                         <br>
                         <div class="form-group">
                             <label for="image_{{ loop.index }}">Image {{ loop.index }}</label>
-                            <!--<input type="file" class="form-control-file" id="image_{{ loop.index }}" name="additional_images[]" accept="image/*">
-                                <i class="fas fa-pencil-alt"></i>-->
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="remove-checkbox" id="remove_image_{{ loop.index }}" name="remove_pictures[]" value="{{ picture }}">
@@ -56,12 +52,7 @@
                             <br>
                             <div class="form-group">
                                 <label for="video_upload_{{ loop.index }}">Vidéo {{ loop.index }}</label>
-                                <!--<i class="fas fa-pencil-alt"></i> -->
                             </div>
-                            <!--<div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="remove_video_{{ loop.index }}" name="remove_videos[]" value="{{ video }}">
-                                <label class="form-check-label" for="remove_video_{{ loop.index }}"><i class="fas fa-times"></i></label>
-                            </div>-->
                             </div>
                         </div>
                     {% endfor %}
@@ -75,12 +66,14 @@
                     {{ form_label(form.name, 'Nom*') }}
                     {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(form.name) }}
+                    <span id="trick-name-error" class="error-message"></span>
                 </div>
                 <br>
                 <div class="form-group">
                     {{ form_label(form.description, 'Description*') }}
                     {{ form_widget(form.description, {'attr': {'class': 'form-control', 'style': 'height: 200px;'}}) }}
                     <span class="error-message">{{ form_errors(form.description) }}</span>
+                    <span id="description-error" class="error-message"></span>
                 </div>
                 <br>
                 <div class="form-group">
@@ -92,7 +85,6 @@
                 <div class="form-group">
                     {{ form_label(form.videos, 'Vidéos') }}
                     {{ form_widget(form.videos, {'attr': {'class': 'form-control'}}) }}
-                    <span id="videos-error" class="error-message"></span>
                     <span class="help-message">{{ form_help(form.videos) }}</span>
                 </div>
                 <br>
