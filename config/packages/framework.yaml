@@ -5,6 +5,9 @@ framework:
     http_method_override: false
     handle_all_throwables: true
 
+    mailer:
+        dsn: 'smtp://smtp.gmail.com:587?encryption=tls&auth_mode=login&username=snowtricks38@gmail.com&password=SnowTricks38!'
+        
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
     session:
